@@ -106,7 +106,12 @@ public class StreamWorkManagerTest extends WorkManagerTest {
         tracker.assertDiff(0, 0, 6, 0);
     }
 
+    /**
+     * This test cannot be run with storeState enabled.<br>
+     * When the first work finishes, its status is not scheduled anymore and following works are not run.
+     */
     @Test
+    @Deploy("org.nuxeo.ecm.core.event:test-stream-workmanager-disable-storestate.xml")
     public void testWorkNonIdempotent() throws InterruptedException {
         MetricsTracker tracker = new MetricsTracker();
         SleepWork work = new SleepWork(1000, false);
@@ -159,19 +164,11 @@ public class StreamWorkManagerTest extends WorkManagerTest {
     }
 
     @Override
-    @Ignore
-    @Test
-    public void testWorkManagerCancelScheduling() throws Exception {
-        // Canceling is not supported, but we can not assume on duration with random id
-        super.testWorkManagerCancelScheduling();
-    }
-
-    @Override
-    @Ignore
+    @Ignore()
     @Test
     public void testSleepDurationTakenIntoAccount() throws InterruptedException {
-        // shutdown duration does not concern StreamWorkManager
-        super.testSleepDurationTakenIntoAccount();
+        // since StreamWorkManager does not wait a fixed amount of time it cannot be tested as its parent is
+        throw new UnsupportedOperationException();
     }
 
 }
