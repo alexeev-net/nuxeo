@@ -124,14 +124,6 @@ public class CoreFeature extends SimpleFeature {
                 sb.append(System.lineSeparator());
                 String queueid = queueids.next();
                 sb.append(workManager.getMetrics(queueid));
-                sb.append(",works=");
-                Iterator<String> works = workManager.listWorkIds(queueid, null).iterator();
-                while (works.hasNext()) {
-                    sb.append(works.next());
-                    if (works.hasNext()) {
-                        sb.append(",");
-                    }
-                }
             }
             log.error(sb.toString(), new Throwable("stack trace"));
         }

@@ -22,7 +22,6 @@ import static org.nuxeo.ecm.core.api.CoreSession.ALLOW_VERSION_WRITE;
 import static org.nuxeo.ecm.platform.picture.listener.PictureViewsGenerationListener.DISABLE_PICTURE_VIEWS_GENERATION_LISTENER;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -34,7 +33,6 @@ import org.nuxeo.ecm.core.event.EventService;
 import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
 import org.nuxeo.ecm.core.versioning.VersioningService;
 import org.nuxeo.ecm.core.work.AbstractWork;
-import org.nuxeo.ecm.core.work.api.WorkManager;
 import org.nuxeo.ecm.platform.picture.api.adapters.PictureResourceAdapter;
 import org.nuxeo.runtime.api.Framework;
 
@@ -133,17 +131,6 @@ public class PictureViewsGenerationWork extends AbstractWork {
      * @since 5.8
      */
     protected void firePictureViewsGenerationDoneEvent(DocumentModel doc) {
-        WorkManager workManager = Framework.getService(WorkManager.class);
-        List<String> workIds = workManager.listWorkIds(CATEGORY_PICTURE_GENERATION, null);
-        int worksCount = 0;
-        for (String workId : workIds) {
-            if (workId.equals(getId())) {
-                if (++worksCount > 1) {
-                    // another work scheduled
-                    return;
-                }
-            }
-        }
         DocumentEventContext ctx = new DocumentEventContext(session, session.getPrincipal(), doc);
         Event event = ctx.newEvent(PICTURE_VIEWS_GENERATION_DONE_EVENT);
         Framework.getService(EventService.class).fireEvent(event);
