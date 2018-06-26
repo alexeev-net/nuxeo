@@ -388,7 +388,6 @@ object NuxeoRest {
           .body(StringBody( """{"params":{},"context":{}}"""))
       ).exec(waitForAsyncJobs())
     }
-
   }
 
 }

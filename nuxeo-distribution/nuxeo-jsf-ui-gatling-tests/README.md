@@ -162,6 +162,10 @@ For instance: `-Dnav.users=30 -Dnavjsf=10 -Dupd.user=5 -Dnavjsf.pause_ms=5000`
 
 Drop and recreate the repository index.
 
+## Sim85BulkUpdateDocuments: Run a bulk action on documents
+
+Perform a bulk action (setProperties) on all the documents.
+
 # Executing bench
 
 To run a gatling test you need to use explicitely the `bench` maven profile.
